@@ -33,6 +33,7 @@ class Body extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: SizeConfig.screenHeight * 0.04),
+                // ignore: prefer_const_constructors
                 SignForm(),
                 SizedBox(height: SizeConfig.screenHeight * 0.08),
                 Row(
@@ -55,6 +56,7 @@ class Body extends StatelessWidget {
                 SizedBox(
                   height: getProportionateScreenHeight(20),
                 ),
+                // ignore: prefer_const_constructors
                 NoAccountText()
               ],
             ),
