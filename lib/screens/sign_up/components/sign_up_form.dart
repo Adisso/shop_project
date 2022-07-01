@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop_project/screens/complete_profile/complete_profile_screen.dart';
 
 import '../../../components/custom_surffix_icon.dart';
 import '../../../components/default_button.dart';
@@ -38,6 +39,8 @@ class _SignUpFormState extends State<SignUpForm> {
             press: () {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
+                Navigator.popAndPushNamed(
+                    context, CompleteProfileScreen.routeName);
               }
             },
           ),
