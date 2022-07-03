@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shop_project/components/default_button.dart';
+import 'package:shop_project/screens/home/home_screen.dart';
 import 'package:shop_project/size_config.dart';
 
 class Body extends StatelessWidget {
@@ -31,7 +32,12 @@ class Body extends StatelessWidget {
         Padding(
           padding:
               EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(28)),
-          child: DefaultButton(text: "Back to home", press: () {}),
+          child: DefaultButton(
+            text: "Back to home",
+            press: () {
+              Navigator.popAndPushNamed(context, HomeScreen.routeName);
+            },
+          ),
         ),
         const Spacer(),
       ],

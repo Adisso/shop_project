@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop_project/screens/sign_in/sign_in_screen.dart';
 
 import '../../../components/default_button.dart';
 import '../../../constants.dart';
@@ -107,7 +108,11 @@ class _OtpFormState extends State<OtpForm> {
           SizedBox(
             height: SizeConfig.screenHeight * 0.15,
           ),
-          DefaultButton(text: "Continute", press: () {}),
+          DefaultButton(
+              text: "Continute",
+              press: () {
+                Navigator.popAndPushNamed(context, SignInScreen.routeName);
+              }),
         ],
       ),
     );
