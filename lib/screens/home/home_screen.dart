@@ -7,7 +7,9 @@ class HomeScreen extends StatelessWidget {
   static String routeName = "/home";
   @override
   Widget build(BuildContext context) {
+    // ignore: prefer_const_constructors
     return Scaffold(
+      // ignore: prefer_const_constructors
       body: Body(),
     );
   }
