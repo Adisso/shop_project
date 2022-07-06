@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shop_project/components/rounded_icon_btn.dart';
 
-import '../../../size_config.dart';
+import '../../../../size_config.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double rating;
 
   // ignore: use_key_in_widget_constructors
-  const CustomAppBar({Key? key, required this.rating});
+  const CustomAppBar({required this.rating});
 
   @override
   Size get preferredSize => Size.fromHeight(AppBar().preferredSize.height);
