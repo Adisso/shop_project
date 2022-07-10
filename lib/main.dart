@@ -4,10 +4,12 @@ import 'routes.dart';
 import 'screens/splash_screen/splash_screen.dart';
 import 'theme.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky,
-      overlays: []).then((_) => runApp(const MyApp()));
+      overlays: []).then(
+    (_) => runApp(const MyApp()),
+  );
 }
 
 class MyApp extends StatelessWidget {
