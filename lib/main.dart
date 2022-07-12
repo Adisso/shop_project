@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:shop_project/screens/profile/profile_screen.dart';
 import 'routes.dart';
 import 'screens/splash_screen/splash_screen.dart';
 import 'theme.dart';
@@ -22,7 +21,7 @@ class MyApp extends StatelessWidget {
       title: 'Walejro',
       theme: theme(),
       //home: const SplashScreen(),
-      initialRoute: ProfileScreen.routeName,
+      initialRoute: SplashScreen.routeName,
       routes: routes,
     );
   }
