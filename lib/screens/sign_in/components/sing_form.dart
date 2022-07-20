@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shop_project/screens/forgot_password/forgot_password_screen.dart';
 import 'package:shop_project/screens/login_succes/login_succes_screen.dart';
@@ -61,7 +62,13 @@ class _SignFormState extends State<SignForm> {
             press: () {
               if (_formKey.currentState!.validate() && errors.isEmpty) {
                 _formKey.currentState!.save();
-                Navigator.pushNamed(context, LoginSuccesScreen.routeName);
+                FirebaseAuth.instance.authStateChanges().listen((User? user) {
+                  if (user == null) {
+                    print('User is currently signed out!');
+                  } else {
+                    Navigator.pushNamed(context, LoginSuccesScreen.routeName);
+                  }
+                });
               }
             },
           )
