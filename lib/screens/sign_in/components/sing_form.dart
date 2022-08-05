@@ -18,9 +18,18 @@ class SignForm extends StatefulWidget {
 
 class _SignFormState extends State<SignForm> {
   final _formKey = GlobalKey<FormState>();
-  final List<String> errors = [];
-  String? email;
-  String? password;
+  final List<String?> errors = [];
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+
+    super.dispose();
+  }
+
   bool? remember = false;
   @override
   Widget build(BuildContext context) {
@@ -60,9 +69,8 @@ class _SignFormState extends State<SignForm> {
           DefaultButton(
             text: "Continue",
             press: () {
-              if (_formKey.currentState!.validate() && errors.isEmpty) {
-                _formKey.currentState!.save();
-                Navigator.pushNamed(context, LoginSuccesScreen.routeName);
+              if (_formKey.currentState!.validate()) {
+                signIn();
               }
             },
           )
@@ -73,34 +81,26 @@ class _SignFormState extends State<SignForm> {
 
   TextFormField buildPasswordFormField() {
     return TextFormField(
-      onSaved: (newValue) => password = newValue,
+      obscureText: true,
+      controller: passwordController,
       onChanged: (value) {
-        if (value.isNotEmpty && errors.contains(kPassNullError)) {
-          setState(() {
-            errors.remove(kPassNullError);
-          });
-        } else if (value.length >= 8 && errors.contains(kShortPassError)) {
-          setState(() {
-            errors.remove(kShortPassError);
-          });
+        if (value.isNotEmpty) {
+          removeError(error: kPassNullError);
+        } else if (value.length >= 8) {
+          removeError(error: kShortPassError);
         }
+        return null;
       },
       validator: (value) {
-        if (value == null ||
-            value.isEmpty && !errors.contains(kPassNullError)) {
-          setState(() {
-            errors.add(kPassNullError);
-          });
+        if (value!.isEmpty) {
+          addError(error: kPassNullError);
           return "";
-        } else if (value.length < 8 && !errors.contains(kShortPassError)) {
-          setState(() {
-            errors.add(kShortPassError);
-          });
+        } else if (value.length < 8) {
+          addError(error: kShortPassError);
           return "";
         }
         return null;
       },
-      obscureText: true,
       decoration: const InputDecoration(
         labelText: "Password",
         hintText: "Enter your password",
@@ -111,41 +111,58 @@ class _SignFormState extends State<SignForm> {
 
   TextFormField buildEmailFormField() {
     return TextFormField(
-      onSaved: (newValue) => email = newValue,
+      keyboardType: TextInputType.emailAddress,
+      controller: emailController,
       onChanged: (value) {
-        if (value.isNotEmpty && errors.contains(kEmailNullError)) {
-          setState(() {
-            errors.remove(kEmailNullError);
-          });
-        } else if (emailValidatorRegExp.hasMatch(value) &&
-            errors.contains(kInvalidEmailError)) {
-          setState(() {
-            errors.remove(kInvalidEmailError);
-          });
+        if (value.isNotEmpty) {
+          removeError(error: kEmailNullError);
+        } else if (emailValidatorRegExp.hasMatch(value)) {
+          removeError(error: kInvalidEmailError);
         }
+        return null;
       },
       validator: (value) {
-        if (value == null ||
-            value.isEmpty && !errors.contains(kEmailNullError)) {
-          setState(() {
-            errors.add(kEmailNullError);
-          });
+        if (value!.isEmpty) {
+          addError(error: kEmailNullError);
           return "";
-        } else if (!emailValidatorRegExp.hasMatch(value) &&
-            !errors.contains(kInvalidEmailError)) {
-          setState(() {
-            errors.add(kInvalidEmailError);
-          });
+        } else if (!emailValidatorRegExp.hasMatch(value)) {
+          addError(error: kInvalidEmailError);
           return "";
         }
         return null;
       },
-      keyboardType: TextInputType.emailAddress,
       decoration: const InputDecoration(
         labelText: "Email",
         hintText: "Enter your email",
         suffixIcon: CustomSurffixIcon(icon: "assets/icons/Mail.svg"),
       ),
     );
+  }
+
+  void addError({String? error}) {
+    if (!errors.contains(error)) {
+      setState(() {
+        errors.add(error);
+      });
+    }
+  }
+
+  void removeError({String? error}) {
+    if (errors.contains(error)) {
+      setState(() {
+        errors.remove(error);
+      });
+    }
+  }
+
+  Future signIn() async {
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim());
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user != null) {
+        Navigator.pushNamed(context, LoginSuccesScreen.routeName);
+      }
+    });
   }
 }
