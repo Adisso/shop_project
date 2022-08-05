@@ -70,6 +70,7 @@ class _SignFormState extends State<SignForm> {
             text: "Continue",
             press: () {
               if (_formKey.currentState!.validate()) {
+                signInToFirebase();
                 signIn();
               }
             },
@@ -155,13 +156,23 @@ class _SignFormState extends State<SignForm> {
     }
   }
 
-  Future signIn() async {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim());
+  Future signInToFirebase() async {
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailController.text.trim(),
+          password: passwordController.text.trim());
+    } on FirebaseAuthException catch (e) {
+      print('Failed with error code: ${e.code}');
+      print(e.message);
+    }
+  }
+
+  void signIn() {
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       if (user != null) {
         Navigator.pushNamed(context, LoginSuccesScreen.routeName);
+      } else {
+        addError(error: "No user with that email or password");
       }
     });
   }
