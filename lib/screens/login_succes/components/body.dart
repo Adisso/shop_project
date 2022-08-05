@@ -11,9 +11,14 @@ class Body extends StatelessWidget {
     return Column(
       children: [
         SizedBox(height: SizeConfig.screenHeight * 0.04),
-        Image.asset(
-          "assets/images/success.png",
-          height: SizeConfig.screenHeight * 0.4,
+        TextButton(
+          onPressed: () {
+            Navigator.popAndPushNamed(context, HomeScreen.routeName);
+          },
+          child: Image.asset(
+            "assets/images/success.png",
+            height: SizeConfig.screenHeight * 0.4,
+          ),
         ),
         SizedBox(height: SizeConfig.screenHeight * 0.08),
         Padding(
@@ -33,7 +38,7 @@ class Body extends StatelessWidget {
           padding:
               EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(28)),
           child: DefaultButton(
-            text: "Back to home",
+            text: "Go to the store!",
             press: () {
               Navigator.popAndPushNamed(context, HomeScreen.routeName);
             },

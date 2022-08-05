@@ -8,16 +8,18 @@ class ProfileMenu extends StatelessWidget {
     Key? key,
     required this.icon,
     required this.text,
+    required this.press,
   }) : super(key: key);
 
   final String icon;
   final String text;
+  final VoidCallback press;
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: TextButton(
-        onPressed: () {},
+        onPressed: press,
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all<Color>(
             const Color(0xFFF5F6F9),
