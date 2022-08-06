@@ -37,8 +37,8 @@ class Body extends StatelessWidget {
           ProfileMenu(
             press: () {
               FirebaseAuth.instance.signOut();
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                  SignInScreen.routeName, (Route<dynamic> route) => false);
+              Navigator.of(context)
+                  .popUntil(ModalRoute.withName(SignInScreen.routeName));
             },
             icon: "assets/icons/Log out.svg",
             text: "Log Out",

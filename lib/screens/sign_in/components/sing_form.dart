@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shop_project/screens/forgot_password/forgot_password_screen.dart';
 import 'package:shop_project/screens/login_succes/login_succes_screen.dart';
 
@@ -21,6 +22,13 @@ class _SignFormState extends State<SignForm> {
   final List<String?> errors = [];
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  bool? remember = false;
+
+  @override
+  void initState() {
+    loadUserEmailPassword();
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -30,7 +38,6 @@ class _SignFormState extends State<SignForm> {
     super.dispose();
   }
 
-  bool? remember = false;
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -43,16 +50,17 @@ class _SignFormState extends State<SignForm> {
           SizedBox(height: getProportionateScreenHeight(30)),
           Row(
             children: [
-              Checkbox(
-                value: remember,
-                activeColor: kPrimaryColor,
-                onChanged: (value) {
-                  setState(() {
-                    remember = value;
-                  });
-                },
+              Row(
+                children: [
+                  Checkbox(
+                      value: remember,
+                      activeColor: kPrimaryColor,
+                      onChanged: (value) {
+                        handleRemeberme(value);
+                      }),
+                  const Text("Remember me"),
+                ],
               ),
-              const Text("Remember me"),
               const Spacer(),
               GestureDetector(
                 onTap: () => Navigator.popAndPushNamed(
@@ -68,16 +76,58 @@ class _SignFormState extends State<SignForm> {
           SizedBox(height: getProportionateScreenHeight(20)),
           DefaultButton(
             text: "Continue",
-            press: () {
+            press: () async {
               if (_formKey.currentState!.validate()) {
-                signInToFirebase();
-                signIn();
+                _formKey.currentState!.save();
+                await signInToFirebase();
+                await signIn();
               }
             },
           )
         ],
       ),
     );
+  }
+
+//handle remember me function
+  void handleRemeberme(bool? value) {
+    remember = value;
+    SharedPreferences.getInstance().then(
+      (prefs) {
+        prefs.setBool("remember_me", value!);
+        prefs.setString('email', emailController.text.trim());
+        prefs.setString('password', passwordController.text);
+      },
+    );
+    if (mounted) {
+      setState(() {
+        remember = value;
+      });
+    }
+  }
+
+  //load email and password
+  void loadUserEmailPassword() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var email = prefs.getString("email") ?? "";
+      var password = prefs.getString("password") ?? "";
+      var remeberMe = prefs.getBool("remember_me") ?? false;
+      print(remeberMe);
+      print(email);
+      print(password);
+      if (remeberMe) {
+        if (mounted) {
+          setState(() {
+            remember = true;
+          });
+        }
+        emailController.text = email;
+        passwordController.text = password;
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 
   TextFormField buildPasswordFormField() {
@@ -167,13 +217,20 @@ class _SignFormState extends State<SignForm> {
     }
   }
 
-  void signIn() {
-    FirebaseAuth.instance.authStateChanges().listen((User? user) {
-      if (user != null) {
-        Navigator.pushNamed(context, LoginSuccesScreen.routeName);
-      } else {
-        addError(error: "No user with that email or password");
+  Future signIn() async {
+    if (mounted) {
+      try {
+        FirebaseAuth.instance.authStateChanges().listen((User? user) {
+          if (user != null) {
+            Navigator.pushNamed(context, LoginSuccesScreen.routeName);
+          } else {
+            addError(error: "No user with that email or password");
+          }
+        });
+      } on FirebaseAuthException catch (e) {
+        print('Failed with error code: ${e.code}');
+        print(e.message);
       }
-    });
+    }
   }
 }
