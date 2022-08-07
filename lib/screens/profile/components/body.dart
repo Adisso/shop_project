@@ -1,6 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:shop_project/screens/sign_in/sign_in_screen.dart';
+import '../../../src/authentication.dart';
 import 'profile_menu.dart';
 import 'profile_picture.dart';
 
@@ -34,11 +33,11 @@ class Body extends StatelessWidget {
             icon: "assets/icons/Question mark.svg",
             text: "Help Center",
           ),
+          // Log out
           ProfileMenu(
             press: () {
-              FirebaseAuth.instance.signOut();
-              Navigator.of(context)
-                  .popUntil(ModalRoute.withName(SignInScreen.routeName));
+              Auth.signOutFromFirebase();
+              Auth.goToLoginPage(context);
             },
             icon: "assets/icons/Log out.svg",
             text: "Log Out",

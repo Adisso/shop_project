@@ -1,15 +1,14 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shop_project/screens/forgot_password/forgot_password_screen.dart';
-import 'package:shop_project/screens/login_succes/login_succes_screen.dart';
 
 import '../../../components/custom_surffix_icon.dart';
 import '../../../components/default_button.dart';
 import '../../../components/form_error.dart';
 import '../../../constants.dart';
 import '../../../size_config.dart';
+import '../../../src/authentication.dart';
 
+// ignore_for_file: avoid_print
 class SignForm extends StatefulWidget {
   const SignForm({Key? key}) : super(key: key);
 
@@ -25,16 +24,10 @@ class _SignFormState extends State<SignForm> {
   bool? remember = false;
 
   @override
-  void initState() {
-    loadUserEmailPassword();
-    super.initState();
-  }
-
-  @override
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
-
+    print('dispose');
     super.dispose();
   }
 
@@ -56,14 +49,14 @@ class _SignFormState extends State<SignForm> {
                       value: remember,
                       activeColor: kPrimaryColor,
                       onChanged: (value) {
-                        handleRemeberme(value);
+                        remember = value;
                       }),
                   const Text("Remember me"),
                 ],
               ),
               const Spacer(),
               GestureDetector(
-                onTap: () => Navigator.popAndPushNamed(
+                onTap: () => Navigator.pushNamed(
                     context, ForgotPasswordScreen.routeName),
                 child: const Text(
                   "Forgot password?",
@@ -76,58 +69,21 @@ class _SignFormState extends State<SignForm> {
           SizedBox(height: getProportionateScreenHeight(20)),
           DefaultButton(
             text: "Continue",
-            press: () async {
+            press: () {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
-                await signInToFirebase();
-                await signIn();
+                Auth.signInToFirebase(
+                  emailAddress: emailController.text.trim(),
+                  password: passwordController.text.trim(),
+                  context: context,
+                );
+                Auth.goToStore(context);
               }
             },
           )
         ],
       ),
     );
-  }
-
-//handle remember me function
-  void handleRemeberme(bool? value) {
-    remember = value;
-    SharedPreferences.getInstance().then(
-      (prefs) {
-        prefs.setBool("remember_me", value!);
-        prefs.setString('email', emailController.text.trim());
-        prefs.setString('password', passwordController.text);
-      },
-    );
-    if (mounted) {
-      setState(() {
-        remember = value;
-      });
-    }
-  }
-
-  //load email and password
-  void loadUserEmailPassword() async {
-    try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      var email = prefs.getString("email") ?? "";
-      var password = prefs.getString("password") ?? "";
-      var remeberMe = prefs.getBool("remember_me") ?? false;
-      print(remeberMe);
-      print(email);
-      print(password);
-      if (remeberMe) {
-        if (mounted) {
-          setState(() {
-            remember = true;
-          });
-        }
-        emailController.text = email;
-        passwordController.text = password;
-      }
-    } catch (e) {
-      print(e);
-    }
   }
 
   TextFormField buildPasswordFormField() {
@@ -140,7 +96,7 @@ class _SignFormState extends State<SignForm> {
         } else if (value.length >= 8) {
           removeError(error: kShortPassError);
         }
-        return null;
+        return;
       },
       validator: (value) {
         if (value!.isEmpty) {
@@ -170,7 +126,7 @@ class _SignFormState extends State<SignForm> {
         } else if (emailValidatorRegExp.hasMatch(value)) {
           removeError(error: kInvalidEmailError);
         }
-        return null;
+        return;
       },
       validator: (value) {
         if (value!.isEmpty) {
@@ -203,34 +159,6 @@ class _SignFormState extends State<SignForm> {
       setState(() {
         errors.remove(error);
       });
-    }
-  }
-
-  Future signInToFirebase() async {
-    try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: emailController.text.trim(),
-          password: passwordController.text.trim());
-    } on FirebaseAuthException catch (e) {
-      print('Failed with error code: ${e.code}');
-      print(e.message);
-    }
-  }
-
-  Future signIn() async {
-    if (mounted) {
-      try {
-        FirebaseAuth.instance.authStateChanges().listen((User? user) {
-          if (user != null) {
-            Navigator.pushNamed(context, LoginSuccesScreen.routeName);
-          } else {
-            addError(error: "No user with that email or password");
-          }
-        });
-      } on FirebaseAuthException catch (e) {
-        print('Failed with error code: ${e.code}');
-        print(e.message);
-      }
     }
   }
 }
