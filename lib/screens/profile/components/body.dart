@@ -37,7 +37,7 @@ class Body extends StatelessWidget {
           ProfileMenu(
             press: () {
               Auth.signOutFromFirebase();
-              Auth.goToLoginPage(context);
+              Auth.goToLoginPage();
             },
             icon: "assets/icons/Log out.svg",
             text: "Log Out",

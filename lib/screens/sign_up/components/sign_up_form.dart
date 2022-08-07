@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shop_project/screens/complete_profile/complete_profile_screen.dart';
+import 'package:shop_project/src/authentication.dart';
 
 import '../../../components/custom_surffix_icon.dart';
 import '../../../components/default_button.dart';
@@ -17,9 +18,21 @@ class SignUpForm extends StatefulWidget {
 class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
   final List<String> errors = [];
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
   String? email;
   String? password;
   String? confirmPassword;
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -39,6 +52,10 @@ class _SignUpFormState extends State<SignUpForm> {
             press: () {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
+                Auth.registerAccount(
+                  emailAddress: emailController.text.trim(),
+                  password: passwordController.text.trim(),
+                );
                 Navigator.popAndPushNamed(
                     context, CompleteProfileScreen.routeName);
               }
@@ -51,36 +68,27 @@ class _SignUpFormState extends State<SignUpForm> {
 
   TextFormField buildEmailFormField() {
     return TextFormField(
+      keyboardType: TextInputType.emailAddress,
+      controller: emailController,
       onSaved: (newValue) => email = newValue,
       onChanged: (value) {
-        if (value.isNotEmpty && errors.contains(kEmailNullError)) {
-          setState(() {
-            errors.remove(kEmailNullError);
-          });
-        } else if (emailValidatorRegExp.hasMatch(value) &&
-            errors.contains(kInvalidEmailError)) {
-          setState(() {
-            errors.remove(kInvalidEmailError);
-          });
+        if (value.isNotEmpty) {
+          removeError(error: kEmailNullError);
+        } else if (emailValidatorRegExp.hasMatch(value)) {
+          removeError(error: kInvalidEmailError);
         }
+        return;
       },
       validator: (value) {
-        if (value == null ||
-            value.isEmpty && !errors.contains(kEmailNullError)) {
-          setState(() {
-            errors.add(kEmailNullError);
-          });
+        if (value!.isEmpty) {
+          addError(error: kEmailNullError);
           return "";
-        } else if (!emailValidatorRegExp.hasMatch(value) &&
-            !errors.contains(kInvalidEmailError)) {
-          setState(() {
-            errors.add(kInvalidEmailError);
-          });
+        } else if (!emailValidatorRegExp.hasMatch(value)) {
+          addError(error: kInvalidEmailError);
           return "";
         }
         return null;
       },
-      keyboardType: TextInputType.emailAddress,
       decoration: const InputDecoration(
         labelText: "Email",
         hintText: "Enter your email",
@@ -91,34 +99,27 @@ class _SignUpFormState extends State<SignUpForm> {
 
   TextFormField buildPasswordFormField() {
     return TextFormField(
+      obscureText: true,
+      controller: passwordController,
       onSaved: (newValue) => password = newValue,
       onChanged: (value) {
-        if (value.isNotEmpty && errors.contains(kPassNullError)) {
-          setState(() {
-            errors.remove(kPassNullError);
-          });
-        } else if (value.length >= 8 && errors.contains(kShortPassError)) {
-          setState(() {
-            errors.remove(kShortPassError);
-          });
+        if (value.isNotEmpty) {
+          removeError(error: kPassNullError);
+        } else if (value.length >= 8) {
+          removeError(error: kShortPassError);
         }
+        return;
       },
       validator: (value) {
-        if (value == null ||
-            value.isEmpty && !errors.contains(kPassNullError)) {
-          setState(() {
-            errors.add(kPassNullError);
-          });
+        if (value!.isEmpty) {
+          addError(error: kPassNullError);
           return "";
-        } else if (value.length < 8 && !errors.contains(kShortPassError)) {
-          setState(() {
-            errors.add(kShortPassError);
-          });
+        } else if (value.length < 8) {
+          addError(error: kShortPassError);
           return "";
         }
         return null;
       },
-      obscureText: true,
       decoration: const InputDecoration(
         labelText: "Password",
         hintText: "Enter your password",
@@ -129,39 +130,48 @@ class _SignUpFormState extends State<SignUpForm> {
 
   TextFormField buildConfirmPasswordFormField() {
     return TextFormField(
+      obscureText: true,
+      controller: confirmPasswordController,
       onSaved: (newValue) => confirmPassword = newValue,
       onChanged: (value) {
-        if (value.isNotEmpty && errors.contains(kPassNullError)) {
-          setState(() {
-            errors.remove(kPassNullError);
-          });
-        } else if (value == password && errors.contains(kMatchPassError)) {
-          setState(() {
-            errors.remove(kMatchPassError);
-          });
+        if (value.isNotEmpty) {
+          removeError(error: kPassNullError);
+        } else if (value == passwordController.text) {
+          removeError(error: kMatchPassError);
         }
+        return;
       },
       validator: (value) {
-        if (value == null ||
-            value.isEmpty && !errors.contains(kPassNullError)) {
-          setState(() {
-            errors.add(kPassNullError);
-          });
+        if (value!.isEmpty) {
+          addError(error: kPassNullError);
           return "";
-        } else if (value != password && !errors.contains(kMatchPassError)) {
-          setState(() {
-            errors.add(kMatchPassError);
-          });
+        } else if (value != passwordController.text) {
+          addError(error: kMatchPassError);
           return "";
         }
         return null;
       },
-      obscureText: true,
       decoration: const InputDecoration(
         labelText: "Confirm Password",
         hintText: "Enter your password",
         suffixIcon: CustomSurffixIcon(icon: "assets/icons/Lock.svg"),
       ),
     );
+  }
+
+  void addError({required String error}) {
+    if (!errors.contains(error)) {
+      setState(() {
+        errors.add(error);
+      });
+    }
+  }
+
+  void removeError({required String error}) {
+    if (errors.contains(error)) {
+      setState(() {
+        errors.remove(error);
+      });
+    }
   }
 }

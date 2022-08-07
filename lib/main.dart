@@ -1,10 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:shop_project/screens/home/home_screen.dart';
-import 'package:shop_project/screens/sign_in/sign_in_screen.dart';
+import 'package:no_context_navigation/no_context_navigation.dart';
 import 'routes.dart';
 import 'screens/splash_screen/splash_screen.dart';
+import 'src/utils.dart';
 import 'theme.dart';
 import 'firebase_options.dart';
 
@@ -19,14 +19,13 @@ Future<void> main() async {
   );
 }
 
-final navigatorKey = GlobalKey<NavigatorState>();
-
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      navigatorKey: navigatorKey,
+      scaffoldMessengerKey: Utils.messengerKey,
+      navigatorKey: NavigationService.navigationKey,
       debugShowCheckedModeBanner: false,
       title: 'Walejro',
       theme: theme(),

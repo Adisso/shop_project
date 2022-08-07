@@ -18,7 +18,7 @@ class SignForm extends StatefulWidget {
 
 class _SignFormState extends State<SignForm> {
   final _formKey = GlobalKey<FormState>();
-  final List<String?> errors = [];
+  final List<String> errors = [];
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   bool? remember = false;
@@ -75,9 +75,8 @@ class _SignFormState extends State<SignForm> {
                 Auth.signInToFirebase(
                   emailAddress: emailController.text.trim(),
                   password: passwordController.text.trim(),
-                  context: context,
                 );
-                Auth.goToStore(context);
+                Auth.goToStore();
               }
             },
           )
@@ -146,7 +145,7 @@ class _SignFormState extends State<SignForm> {
     );
   }
 
-  void addError({String? error}) {
+  void addError({required String error}) {
     if (!errors.contains(error)) {
       setState(() {
         errors.add(error);
@@ -154,7 +153,7 @@ class _SignFormState extends State<SignForm> {
     }
   }
 
-  void removeError({String? error}) {
+  void removeError({required String error}) {
     if (errors.contains(error)) {
       setState(() {
         errors.remove(error);
