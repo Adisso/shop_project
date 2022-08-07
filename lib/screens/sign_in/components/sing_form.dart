@@ -27,7 +27,6 @@ class _SignFormState extends State<SignForm> {
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
-    print('dispose');
     super.dispose();
   }
 

@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:no_context_navigation/no_context_navigation.dart';
+import 'package:shop_project/screens/complete_profile/complete_profile_screen.dart';
 import 'package:shop_project/src/utils.dart';
 
 import '../screens/login_succes/login_succes_screen.dart';
@@ -52,5 +53,13 @@ class Auth {
     } on FirebaseAuthException catch (e) {
       Utils.showSnackBar(e.message);
     }
+  }
+
+  static Future goToCompleteProfile() async {
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user != null) {
+        navService.pushNamedAndRemoveUntil(CompleteProfileScreen.routeName);
+      }
+    });
   }
 }

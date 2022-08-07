@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shop_project/screens/complete_profile/complete_profile_screen.dart';
 import 'package:shop_project/src/authentication.dart';
 
 import '../../../components/custom_surffix_icon.dart';
@@ -56,8 +55,7 @@ class _SignUpFormState extends State<SignUpForm> {
                   emailAddress: emailController.text.trim(),
                   password: passwordController.text.trim(),
                 );
-                Navigator.popAndPushNamed(
-                    context, CompleteProfileScreen.routeName);
+                Auth.goToCompleteProfile();
               }
             },
           ),
