@@ -62,4 +62,13 @@ class Auth {
       }
     });
   }
+
+  static Future resetPassword({required String emailAddress}) async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: emailAddress);
+      Utils.showSnackBar("Password reset email was send");
+    } on FirebaseAuthException catch (e) {
+      Utils.showSnackBar(e.message);
+    }
+  }
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:email_validator/email_validator.dart';
+import 'package:shop_project/src/authentication.dart';
 
 import '../../../components/custom_surffix_icon.dart';
 import '../../../components/default_button.dart';
@@ -17,8 +19,14 @@ class ForgotPassForm extends StatefulWidget {
 
 class _ForgotPassFormState extends State<ForgotPassForm> {
   final _formKey = GlobalKey<FormState>();
-  final List<String> errors = [];
-  String? email;
+  final emailController = TextEditingController();
+
+  @override
+  void dispose() {
+    emailController.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,12 +36,13 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
         children: [
           buildEmailFormField(),
           SizedBox(height: getProportionateScreenHeight(30)),
-          FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(100)),
           DefaultButton(
-            text: "Continue",
+            text: "Reset Password",
             press: () {
-              if (_formKey.currentState!.validate()) {}
+              if (_formKey.currentState!.validate()) {
+                Auth.resetPassword(emailAddress: emailController.text.trim());
+              }
             },
           ),
         ],
@@ -43,33 +52,12 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
 
   TextFormField buildEmailFormField() {
     return TextFormField(
-      onSaved: (newValue) => email = newValue,
-      onChanged: (value) {
-        if (value.isNotEmpty && errors.contains(kEmailNullError)) {
-          setState(() {
-            errors.remove(kEmailNullError);
-          });
-        } else if (emailValidatorRegExp.hasMatch(value) &&
-            errors.contains(kInvalidEmailError)) {
-          setState(() {
-            errors.remove(kInvalidEmailError);
-          });
-        }
-      },
-      validator: (value) {
-        if (value!.isEmpty && !errors.contains(kEmailNullError)) {
-          setState(() {
-            errors.add(kEmailNullError);
-          });
-        } else if (!emailValidatorRegExp.hasMatch(value) &&
-            !errors.contains(kInvalidEmailError)) {
-          setState(() {
-            errors.add(kInvalidEmailError);
-          });
-        }
-        return null;
-      },
       keyboardType: TextInputType.emailAddress,
+      controller: emailController,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      validator: (email) => email != null && !EmailValidator.validate(email)
+          ? 'Enter a valid email'
+          : null,
       decoration: const InputDecoration(
         labelText: "Email",
         hintText: "Enter your email",
