@@ -10,8 +10,7 @@ class ForgotPasswordScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Forgot password"),
       ),
-      // ignore: prefer_const_constructors
-      body: Body(),
+      body: const Body(),
     );
   }
 }

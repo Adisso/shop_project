@@ -4,8 +4,6 @@ import 'package:shop_project/src/authentication.dart';
 
 import '../../../components/custom_surffix_icon.dart';
 import '../../../components/default_button.dart';
-import '../../../components/form_error.dart';
-import '../../../constants.dart';
 import '../../../size_config.dart';
 
 class ForgotPassForm extends StatefulWidget {
@@ -37,6 +35,7 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
           buildEmailFormField(),
           SizedBox(height: getProportionateScreenHeight(30)),
           SizedBox(height: getProportionateScreenHeight(100)),
+          // Send reset password if email is valid
           DefaultButton(
             text: "Reset Password",
             press: () {
@@ -54,6 +53,7 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
     return TextFormField(
       keyboardType: TextInputType.emailAddress,
       controller: emailController,
+      // Validation
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: (email) => email != null && !EmailValidator.validate(email)
           ? 'Enter a valid email'

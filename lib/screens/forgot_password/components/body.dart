@@ -32,8 +32,7 @@ class Body extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: getProportionateScreenHeight(140)),
-                // ignore: prefer_const_constructors
-                ForgotPassForm(),
+                const ForgotPassForm(),
                 SizedBox(height: SizeConfig.screenHeight * 0.12),
                 const NoAccountText(),
               ],

@@ -8,7 +8,6 @@ import '../../../constants.dart';
 import '../../../size_config.dart';
 import '../../../src/authentication.dart';
 
-// ignore_for_file: avoid_print
 class SignForm extends StatefulWidget {
   const SignForm({Key? key}) : super(key: key);
 
@@ -40,6 +39,8 @@ class _SignFormState extends State<SignForm> {
           SizedBox(height: getProportionateScreenHeight(30)),
           buildPasswordFormField(),
           SizedBox(height: getProportionateScreenHeight(30)),
+
+          // Remember me checkbox
           Row(
             children: [
               Row(
@@ -54,6 +55,8 @@ class _SignFormState extends State<SignForm> {
                 ],
               ),
               const Spacer(),
+
+              // Forgot Password button
               GestureDetector(
                 onTap: () => Navigator.pushNamed(
                     context, ForgotPasswordScreen.routeName),
@@ -66,6 +69,8 @@ class _SignFormState extends State<SignForm> {
           ),
           FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(20)),
+
+          // Continue Button
           DefaultButton(
             text: "Continue",
             press: () {

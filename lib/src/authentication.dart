@@ -19,7 +19,7 @@ class Auth {
     }
   }
 
-  static Future goToStore() async {
+  static void goToStore() {
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       if (user != null) {
         navService.pushNamed(LoginSuccesScreen.routeName);
@@ -35,7 +35,7 @@ class Auth {
     }
   }
 
-  static Future goToLoginPage() async {
+  static void goToLoginPage() {
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       if (user == null) {
         navService.pushNamedAndRemoveUntil(SignInScreen.routeName);
@@ -55,7 +55,7 @@ class Auth {
     }
   }
 
-  static Future goToCompleteProfile() async {
+  static void goToCompleteProfile() {
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       if (user != null) {
         navService.pushNamedAndRemoveUntil(CompleteProfileScreen.routeName);
