@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shop_project/screens/details/components/custom_app_bar.dart';
 import '../../models/product.dart';
-import 'components/body.dart';
+import 'components/details_screen_body.dart';
 
 class DetailsScreen extends StatelessWidget {
   const DetailsScreen({Key? key}) : super(key: key);

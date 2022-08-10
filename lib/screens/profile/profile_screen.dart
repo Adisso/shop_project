@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../components/custom_bottom_nav_bar.dart';
 import '../../enums.dart';
-import 'components/body.dart';
+import 'components/profile_screen_body.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);

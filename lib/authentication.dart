@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:no_context_navigation/no_context_navigation.dart';
 import 'package:shop_project/screens/complete_profile/complete_profile_screen.dart';
-import 'package:shop_project/src/utils.dart';
+import 'package:shop_project/components/custom_snack_bar.dart';
 
-import '../screens/login_succes/login_succes_screen.dart';
-import '../screens/sign_in/sign_in_screen.dart';
+import 'screens/login_succes/login_success_screen.dart';
+import 'screens/sign_in/sign_in_screen.dart';
 
 final NavigationService navService = NavigationService();
 
@@ -15,7 +15,7 @@ class Auth {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: emailAddress, password: password);
     } on FirebaseAuthException catch (e) {
-      Utils.showSnackBar(e.message);
+      CustomSnackBar.showSnackBar(e.message);
     }
   }
 
@@ -31,7 +31,7 @@ class Auth {
     try {
       await FirebaseAuth.instance.signOut();
     } on FirebaseAuthException catch (e) {
-      Utils.showSnackBar(e.message);
+      CustomSnackBar.showSnackBar(e.message);
     }
   }
 
@@ -51,7 +51,7 @@ class Auth {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: emailAddress, password: password);
     } on FirebaseAuthException catch (e) {
-      Utils.showSnackBar(e.message);
+      CustomSnackBar.showSnackBar(e.message);
     }
   }
 
@@ -66,9 +66,9 @@ class Auth {
   static Future resetPassword({required String emailAddress}) async {
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: emailAddress);
-      Utils.showSnackBar("Password reset email was send");
+      CustomSnackBar.showSnackBar("Password reset email was send");
     } on FirebaseAuthException catch (e) {
-      Utils.showSnackBar(e.message);
+      CustomSnackBar.showSnackBar(e.message);
     }
   }
 }

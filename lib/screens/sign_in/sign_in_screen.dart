@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../size_config.dart';
-import 'components/body.dart';
+import 'components/sign_in_body.dart';
 
 class SignInScreen extends StatelessWidget {
   const SignInScreen({Key? key}) : super(key: key);

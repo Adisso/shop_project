@@ -4,7 +4,7 @@ import 'package:shop_project/screens/complete_profile/complete_profile_screen.da
 import 'package:shop_project/screens/details/details_screen.dart';
 import 'package:shop_project/screens/forgot_password/forgot_password_screen.dart';
 import 'package:shop_project/screens/home/home_screen.dart';
-import 'package:shop_project/screens/login_succes/login_succes_screen.dart';
+import 'package:shop_project/screens/login_succes/login_success_screen.dart';
 import 'package:shop_project/screens/otp/otp_screen.dart';
 import 'package:shop_project/screens/profile/profile_screen.dart';
 import 'package:shop_project/screens/sign_in/sign_in_screen.dart';

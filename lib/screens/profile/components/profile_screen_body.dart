@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../src/authentication.dart';
+import '../../../authentication.dart';
 import 'profile_menu.dart';
 import 'profile_picture.dart';
 

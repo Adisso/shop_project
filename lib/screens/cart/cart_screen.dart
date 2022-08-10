@@ -5,7 +5,7 @@ import 'package:shop_project/constants.dart';
 import 'package:shop_project/models/cart.dart';
 import 'package:shop_project/size_config.dart';
 
-import 'components/body.dart';
+import 'components/cart_screen_body.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({Key? key}) : super(key: key);

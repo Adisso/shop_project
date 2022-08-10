@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shop_project/size_config.dart';
 import '../../../components/no_account_text.dart';
 import '../../../components/social_card.dart';
-import 'sing_form.dart';
+import 'sign_form.dart';
 
 class Body extends StatelessWidget {
   const Body({Key? key}) : super(key: key);

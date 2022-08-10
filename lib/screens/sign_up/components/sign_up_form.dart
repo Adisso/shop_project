@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shop_project/src/authentication.dart';
+import 'package:shop_project/authentication.dart';
 
 import '../../../components/custom_surffix_icon.dart';
 import '../../../components/default_button.dart';
