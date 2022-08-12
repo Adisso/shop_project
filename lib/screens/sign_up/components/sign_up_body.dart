@@ -29,8 +29,7 @@ class Body extends StatelessWidget {
                   "Complete your details or continue \nwith social media",
                   textAlign: TextAlign.center,
                 ),
-                // ignore: prefer_const_constructors
-                SignUpForm(),
+                const SignUpForm(),
                 SizedBox(height: SizeConfig.screenHeight * 0.04),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
