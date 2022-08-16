@@ -29,8 +29,7 @@ class Body extends StatelessWidget {
                   "Complete your details or continue \nwith social media",
                   textAlign: TextAlign.center,
                 ),
-                // ignore: prefer_const_constructors
-                CompleteProfileForm(),
+                const CompleteProfileForm(),
                 SizedBox(height: SizeConfig.screenHeight * 0.04),
                 const Text(
                   "By continuing you confirm that you agree  \nwith our Terms and Conditions",
