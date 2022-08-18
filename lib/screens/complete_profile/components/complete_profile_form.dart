@@ -56,7 +56,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
                   phoneNumber: int.parse(_phoneNumberController.text.trim()),
                   adress: _adressController.text.trim(),
                 );
-                Auth.goToOtpScreen();
+                Auth.goToStore();
               }
             },
           )
