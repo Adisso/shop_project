@@ -78,7 +78,10 @@ class Auth {
       {required String firstName,
       required String lastName,
       required int phoneNumber,
-      required String adress}) async {
+      required String street,
+      required String streetNumber,
+      required String postCode,
+      required String city}) async {
     try {
       await FirebaseFirestore.instance
           .collection('users')
@@ -88,7 +91,10 @@ class Auth {
           'first name': firstName,
           'last name': lastName,
           'phone number': phoneNumber,
-          'adress': adress,
+          'street': street,
+          'street number': streetNumber,
+          'post code': postCode,
+          'city': city,
         },
       );
     } on FirebaseException catch (e) {

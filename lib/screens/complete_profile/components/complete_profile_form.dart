@@ -1,8 +1,5 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:shop_project/authentication.dart';
-import 'package:shop_project/screens/otp/otp_screen.dart';
 
 import '../../../components/custom_surffix_icon.dart';
 import '../../../components/default_button.dart';
@@ -20,14 +17,21 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
   final _phoneNumberController = TextEditingController();
-  final _adressController = TextEditingController();
+  final _streetController = TextEditingController();
+  final _streetNumberController = TextEditingController();
+  final _postCodeController = TextEditingController();
+  final _cityController = TextEditingController();
 
   @override
   void dispose() {
     _firstNameController.dispose();
     _lastNameController.dispose();
     _phoneNumberController.dispose();
-    _adressController.dispose();
+    _streetController.dispose();
+    _streetNumberController.dispose();
+    _postCodeController.dispose();
+    _cityController.dispose();
+
     super.dispose();
   }
 
@@ -44,7 +48,13 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
           SizedBox(height: getProportionateScreenHeight(15)),
           buildPhoneNumberFormField(),
           SizedBox(height: getProportionateScreenHeight(15)),
-          buildAddressFormField(),
+          buildStreetFormField(),
+          SizedBox(height: getProportionateScreenHeight(15)),
+          buildStreetNumberFormField(),
+          SizedBox(height: getProportionateScreenHeight(15)),
+          buildPostCodeFormField(),
+          SizedBox(height: getProportionateScreenHeight(15)),
+          buildCityFormField(),
           SizedBox(height: getProportionateScreenHeight(30)),
           DefaultButton(
             text: "Continue",
@@ -54,7 +64,10 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
                   firstName: _firstNameController.text.trim(),
                   lastName: _lastNameController.text.trim(),
                   phoneNumber: int.parse(_phoneNumberController.text.trim()),
-                  adress: _adressController.text.trim(),
+                  street: _streetController.text.trim(),
+                  streetNumber: _streetNumberController.text.trim(),
+                  postCode: _postCodeController.text.trim(),
+                  city: _cityController.text.trim(),
                 );
                 Auth.goToStore();
               }
@@ -65,43 +78,22 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
     );
   }
 
-  TextFormField buildAddressFormField() {
+  TextFormField buildFirstNameFormField() {
     return TextFormField(
-      controller: _adressController,
-      keyboardType: TextInputType.streetAddress,
+      controller: _firstNameController,
+      keyboardType: TextInputType.name,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: (value) {
-        if (value!.length < 5) {
-          return 'Enter a valid adress';
+        if (value!.length < 2) {
+          return 'Enter a valid name';
         }
         return null;
       },
       decoration: const InputDecoration(
-        labelText: "Address",
-        hintText: "Enter your address",
+        labelText: "FirstName",
+        hintText: "Enter your first name",
         suffixIcon: CustomSurffixIcon(
-          icon: "assets/icons/Location point.svg",
-        ),
-      ),
-    );
-  }
-
-  TextFormField buildPhoneNumberFormField() {
-    return TextFormField(
-      controller: _phoneNumberController,
-      keyboardType: TextInputType.phone,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      validator: (value) {
-        if (value!.length != 9) {
-          return 'Enter a valid number';
-        }
-        return null;
-      },
-      decoration: const InputDecoration(
-        labelText: "Phone Number",
-        hintText: "Enter your phone number",
-        suffixIcon: CustomSurffixIcon(
-          icon: "assets/icons/Phone.svg",
+          icon: "assets/icons/User.svg",
         ),
       ),
     );
@@ -128,22 +120,106 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
     );
   }
 
-  TextFormField buildFirstNameFormField() {
+  TextFormField buildPhoneNumberFormField() {
     return TextFormField(
-      controller: _firstNameController,
-      keyboardType: TextInputType.name,
+      controller: _phoneNumberController,
+      keyboardType: TextInputType.phone,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: (value) {
-        if (value!.length < 2) {
-          return 'Enter a valid name';
+        if (value!.length != 9) {
+          return 'Enter a valid number';
         }
         return null;
       },
       decoration: const InputDecoration(
-        labelText: "FirstName",
-        hintText: "Enter your first name",
+        labelText: "Phone Number",
+        hintText: "Enter your phone number",
         suffixIcon: CustomSurffixIcon(
-          icon: "assets/icons/User.svg",
+          icon: "assets/icons/Phone.svg",
+        ),
+      ),
+    );
+  }
+
+  TextFormField buildStreetFormField() {
+    return TextFormField(
+      controller: _streetController,
+      keyboardType: TextInputType.streetAddress,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      validator: (value) {
+        if (value!.length < 2) {
+          return 'Enter a valid street';
+        }
+        return null;
+      },
+      decoration: const InputDecoration(
+        labelText: "Street",
+        hintText: "Enter your street",
+        suffixIcon: CustomSurffixIcon(
+          icon: "assets/icons/Location point.svg",
+        ),
+      ),
+    );
+  }
+
+  TextFormField buildStreetNumberFormField() {
+    return TextFormField(
+      controller: _streetNumberController,
+      keyboardType: TextInputType.streetAddress,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      validator: (value) {
+        if (value!.isEmpty) {
+          return 'Enter a valid street number';
+        }
+        return null;
+      },
+      decoration: const InputDecoration(
+        labelText: "Street number",
+        hintText: "Enter your street number",
+        suffixIcon: CustomSurffixIcon(
+          icon: "assets/icons/Location point.svg",
+        ),
+      ),
+    );
+  }
+
+  TextFormField buildPostCodeFormField() {
+    return TextFormField(
+      controller: _postCodeController,
+      keyboardType: TextInputType.streetAddress,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      validator: (value) {
+        if (value!.length < 3) {
+          return 'Enter a valid postal code';
+        }
+        return null;
+      },
+      decoration: const InputDecoration(
+        labelText: "Postal code",
+        hintText: "Enter your postal code",
+        suffixIcon: CustomSurffixIcon(
+          icon: "assets/icons/Location point.svg",
+        ),
+      ),
+    );
+  }
+
+  TextFormField buildCityFormField() {
+    return TextFormField(
+      controller: _cityController,
+      keyboardType: TextInputType.streetAddress,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      validator: (value) {
+        if (value!.length < 4) {
+          return 'Enter a valid city';
+        }
+        return null;
+      },
+      decoration: const InputDecoration(
+        labelText: "City",
+        hintText: "Enter your city",
+        suffixIcon: CustomSurffixIcon(
+          icon: "assets/icons/Location point.svg",
         ),
       ),
     );
