@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shop_project/components/custom_bottom_nav_bar.dart';
 import 'package:shop_project/enums.dart';
 
+import '../../size_config.dart';
 import 'components/home_screen_body.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -9,12 +10,11 @@ class HomeScreen extends StatelessWidget {
   static String routeName = "/home";
   @override
   Widget build(BuildContext context) {
-    // ignore: prefer_const_constructors
-    return Scaffold(
-      // ignore: prefer_const_constructors
+    SizeConfig().init(context);
+
+    return const Scaffold(
       body: Body(),
-      bottomNavigationBar:
-          const CustomBottomNavBar(selectedMenu: MenuState.home),
+      bottomNavigationBar: CustomBottomNavBar(selectedMenu: MenuState.home),
     );
   }
 }
