@@ -80,7 +80,10 @@ class Auth {
       required int phoneNumber,
       required String adress}) async {
     try {
-      await FirebaseFirestore.instance.collection('users').add(
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .set(
         {
           'first name': firstName,
           'last name': lastName,
