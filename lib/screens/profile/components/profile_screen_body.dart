@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:no_context_navigation/no_context_navigation.dart';
+import 'package:shop_project/screens/my_account/my_account_screen.dart';
 import '../../../authentication.dart';
 import 'profile_menu.dart';
 import 'profile_picture.dart';
+
+final NavigationService navService = NavigationService();
 
 class Body extends StatelessWidget {
   const Body({Key? key}) : super(key: key);
@@ -13,8 +17,11 @@ class Body extends StatelessWidget {
         children: [
           const ProfilePicture(),
           const SizedBox(height: 20),
+          // My account details
           ProfileMenu(
-            press: () {},
+            press: () {
+              navService.pushNamed(MyAccount.routeName);
+            },
             icon: "assets/icons/User Icon.svg",
             text: "My Account",
           ),
