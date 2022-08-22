@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop_project/size_config.dart';
 
 import '../../../constants.dart';
 
@@ -21,7 +22,10 @@ class ProfileInfoCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(25),
         borderSide: const BorderSide(color: Colors.white, width: 1),
       ),
-      margin: const EdgeInsets.all(15),
+      margin: EdgeInsets.symmetric(
+        vertical: getProportionateScreenWidth(3),
+        horizontal: getProportionateScreenHeight(15),
+      ),
       shadowColor: kSecondaryColor,
       child: Column(
         children: <Widget>[

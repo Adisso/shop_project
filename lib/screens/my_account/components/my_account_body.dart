@@ -15,8 +15,8 @@ class Body extends StatelessWidget {
           const ProfilePicture(),
           const SizedBox(height: 20),
           ProfileInfoCard(
-            title: "Email",
-            subtitle: "test@test.com",
+            title: "test@test.com",
+            subtitle: "Email",
             icon: Icons.email,
             press: () {},
           ),
